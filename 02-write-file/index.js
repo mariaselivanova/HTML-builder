@@ -7,23 +7,27 @@ const readLine = readline.createInterface({
   output: process.stdout
 });
 
-const writer = fs.createWriteStream(path.join(__dirname, 'text.txt'), { encoding: 'utf8' });
+const textPath = path.join(__dirname, 'text.txt');
+const writer = fs.createWriteStream(textPath, { encoding: 'utf8' });
+
+function showByeMessage() {
+  process.stdout.write('Thats`s it!');
+  process.exit();
+}
 
 readLine.setPrompt('Please write something\n');
 readLine.prompt();
 
 readLine.on('line', data => {
   if (data.trim().toLowerCase() === 'exit') {
-    process.stdout.write('Thats`s it!');
-    process.exit();
+    showByeMessage();
   } else {
     writer.write(data + '\n');
   }
 });
 
 readLine.on('SIGINT', () => {
-  process.stdout.write('Thats`s it!');
-  process.exit();
+  showByeMessage();
 });
 
 process.on('error', (err) => {
