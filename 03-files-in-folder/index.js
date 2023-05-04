@@ -14,7 +14,7 @@ async function findFiles() {
         const fileExtension = path.extname(file.name).slice(1);
         const filePath = path.join(folderPath, file.name);
         fs.stat(filePath, (err, stats) => {
-          const sizeInKb = Math.round(stats.size / 1024);
+          const sizeInKb = Math.round(stats.size / 1000);
           console.log(fileName + ' - ' + fileExtension  + ' - ' + sizeInKb + 'kB');
         });
       }
