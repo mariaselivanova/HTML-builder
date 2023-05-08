@@ -88,20 +88,11 @@ async function copyAssetsFolder(originalFolder, copiedFolder) {
     console.error(error);
   }
 }
-  
-async function createAssetsFolder(newPath) {
-  try {
-    await mkdir(newPath, { recursive: true });
-    await copyAssetsFolder(oldAssets, newAssets);
-    console.log('Assets folder has been created');
-  } catch (err) {
-    console.error(err);
-  }
-}
+
   
 createFolder(projectDistFolder)
   .then(() => {
     buildHTML(templatePath, componentsFolder);
     transferStyleFiles(styleFolder);
-    createAssetsFolder(newAssets);
+    copyAssetsFolder(oldAssets, newAssets);
   });
