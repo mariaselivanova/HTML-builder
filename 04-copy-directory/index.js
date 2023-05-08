@@ -1,6 +1,5 @@
-const { mkdir, readdir, copyFile } = require('fs/promises');
+const { mkdir, readdir, copyFile, unlink } = require('fs/promises');
 const path = require('path');
-const fs = require('fs');
 
 async function copyFiles(oldFolder, newFolder) {
   const files = await readdir(oldFolder, { withFileTypes: true });
@@ -12,13 +11,13 @@ async function copyFiles(oldFolder, newFolder) {
 }
 
 async function compareDirs(first, second) {
-  const files1 = await fs.promises.readdir(first);
-  const files2 = await fs.promises.readdir(second);
-  const filteredFiles2 = files2.filter((file) => files1.includes(file));
-  for (const file of files2) {
-    if (!filteredFiles2.includes(file)) {
+  const originalFiles = await readdir(first);
+  const copiedFiles = await readdir(second);
+  const filteredFiles = copiedFiles.filter((file) => originalFiles.includes(file));
+  for (const file of copiedFiles) {
+    if (!filteredFiles.includes(file)) {
       const filePath = path.join(second, file);
-      await fs.promises.unlink(filePath);
+      await unlink(filePath);
     }
   }
 }
